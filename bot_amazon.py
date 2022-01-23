@@ -63,13 +63,12 @@ class BotAmazon:
 
     def iniciar_driver(self):
         try:
-            # Especifique o caminho para o chromedriver
-
-            service = Service('PATH/TO/CHROMEDRIVER/chromedriver')
+            service = Service('C:/PATH/TO/CHROMEDRIVER/chromedriver')  # Especifique AQUI o caminho para o chromedriver, com esse mesmo formato.
             self.driver = webdriver.Chrome(service=service)
         except Exception as ex:
             print(f"{Fore.RED}Erro ao tentar iniciar o Chromedriver.{Fore.RESET}\n"
-                  f"Verifique  SE especificou o PATH corretamente e se a versão é"
+                  f"Verifique se especificou o caminho para o chromedriver corretamente no método 'iniciar_driver'.\n"
+                  f"Em caso positivo, veja se a versão é"
                   f" compatível com sua versão do Google Chrome.\nErro do tipo: {type(ex).__name__}")
             quit()
 
@@ -144,9 +143,11 @@ class BotAmazon:
                     self.driver.quit()
                     break
 
-                WebDriverWait(self.driver, 15).until(ec.element_to_be_clickable((By.XPATH, '//li[@class="a-last"]/a')))
+                WebDriverWait(self.driver, 15).until(ec.element_to_be_clickable((
+                    By.XPATH, '//a[@class="s-pagination-item s-pagination-next s-pagination-button s-pagination-separator"]')))
                 sleep(2)
-                botao_proximo = self.driver.find_element(By.XPATH, '//li[@class="a-last"]/a')
+                botao_proximo = self.driver.find_element(By.XPATH, '//a[@class="s-pagination-item s-pagination-next s-'
+                                                                   'pagination-button s-pagination-separator"]')
                 botao_proximo.click()
             except (NoSuchAttributeException, NoSuchElementException, TimeoutException, KeyboardInterrupt):
                 self.driver.quit()
